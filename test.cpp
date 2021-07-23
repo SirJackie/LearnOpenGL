@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <GL/glut.h>
 #include <stdlib.h>
 
@@ -22,7 +23,8 @@ void Update()
 int main(int argc, char** argv)
 {
     /* GLUT环境初始化*/
-    glutInit (&argc, argv);
+    glutInit(&argc, argv);
+    glewInit();
     /* 显示模式初始化 */
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     /* 定义窗口大小 */
