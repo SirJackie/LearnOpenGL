@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 void Setup()
@@ -9,35 +10,45 @@ void Setup()
 
 void Update()
 {
+    // Clear the screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    // Draw a triangle using APIs that are earlier that 1997
+    // Which will be replaced soon
     glBegin(GL_TRIANGLES);
     glVertex2f(0.0f, 0.0f);
     glVertex2f(0.0f, 0.8f);
     glVertex2f(0.6f, 0.0f);
     glEnd();
 
+    // Forcely Update the FrontBuffer
     glFlush();
 }
     
 int main(int argc, char** argv)
 {
-    /* GLUT环境初始化*/
+    // Init GLUT
     glutInit(&argc, argv);
-    glewInit();
-    /* 显示模式初始化 */
-    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-    /* 定义窗口大小 */
-    glutInitWindowSize (1000, 500);
-    /* 定义窗口位置 */
-    glutInitWindowPosition (30, 30);
-    /* 显示窗口，窗口标题为执行函数名 */
-    glutCreateWindow ( argv [ 0 ] );
-    /* 调用自定义初始化函数 */
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+
+    // Create a window
+    glutInitWindowSize(1000, 500);
+    glutInitWindowPosition(30, 30);
+    glutCreateWindow(argv[0]);
+
+    // Init GLEW ---AFTER CREATING A WINDOW--- !!! (This is very important!)
+    if(glewInit() != GLEW_OK){
+        printf("Error when initializing glew!\n");
+        return -1;
+    }
+    
+    // Run our custom Setup() function
     Setup();
-    /* 注册自定义绘图函数 */
+    // Bind our update function to GLUT
     glutDisplayFunc ( Update );
-    // /* 进入GLUT消息循环，开始执行程序 */
+    // Run our update function every frame
     glutMainLoop( );
+
+    // Return after closing the window
     return 0;
 } 
