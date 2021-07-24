@@ -1,7 +1,8 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+using std::cout;
+using std::endl;
 
 void Setup()
 {
@@ -38,9 +39,12 @@ int main(int argc, char** argv)
 
     // Init GLEW ---AFTER CREATING A WINDOW--- !!! (This is very important!)
     if(glewInit() != GLEW_OK){
-        printf("Error when initializing glew!\n");
+        cout << "Error when initializing glew!\n" << endl;
         return -1;
     }
+
+    // Print OpenGL Version
+    cout << glGetString(GL_VERSION) << endl;
     
     // Run our custom Setup() function
     Setup();
