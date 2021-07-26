@@ -4,6 +4,7 @@
 *.sln
 *.suo
 *.config
+!packages.config
 
 
 # 过滤文件夹Debug, Release, obj, .vs和下载好的NuGet二进制包（使用时会自动重新下载）
