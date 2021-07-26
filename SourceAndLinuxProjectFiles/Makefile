@@ -1,5 +1,5 @@
 test:test.cpp
-	g++ test.cpp -o test -L/usr/X11R6/lib -lGL -lglut -lGLEW -lm
+	g++ main.cpp -o main -L/usr/X11R6/lib -lGL -lglut -lGLEW -lm
 
 .PHONY:
 run:
