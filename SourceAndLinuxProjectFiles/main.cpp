@@ -34,18 +34,31 @@ const      csbool csFalse = 0;
 
 
 
+// Create a buffer ptr saver
 ui32 buffer;
+
+// Define our Vericies
 float positions[6] = {
-	0.0f, 0.0f,
-	0.0f, 0.8f,
-	0.6f, 0.0f
+	 0.0f, -0.5f,
+	-0.5f,  0.5f,
+	 0.5f,  0.5f
 };
 
 void Setup()
 {
+    // Generate a buffer in GPU
 	glGenBuffers(1, &buffer);
+
+    // Select the buffer in GPU and send data to it
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+
+    // Tell OpenGL what things are in this buffer
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+
+    // Debind the buffer
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Update()
