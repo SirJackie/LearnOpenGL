@@ -3,9 +3,13 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
 using std::cout;
 using std::endl;
 using std::string;
+using std::ifstream;
+using std::stringstream;
 
 typedef    unsigned long long  ui64;     // Should be 32-bit 4-byte sign-less
 typedef    signed long long    si64;     // Should be 32-bit 4-byte sign-ful

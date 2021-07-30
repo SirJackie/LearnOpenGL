@@ -2,6 +2,37 @@
 #include <GL/glut.h>
 #include "BasicDataTypeDeclarations.h"
 
+struct ShaderProgramSource{
+	string VertexShader;
+	string FragmentShader;
+};
+
+ShaderProgramSource ParseShader(string filePath){
+	enum class ShaderType{
+		NONE = -1, VERTEX = 0, FRAGMENT = 1
+	};
+
+	ifstream stream(filePath);
+	string line;
+	ShaderType type = ShaderType::NONE;
+	stringstream ss[2];
+
+	while(getline(stream, line)){
+		if(line.find("#shader") != string::npos){
+			if(line.find("vertex")   != string::npos) type = ShaderType::VERTEX;
+			if(line.find("fragment") != string::npos) type = ShaderType::FRAGMENT;
+		}
+		else{
+			ss[(int)type] << line << '\n';
+		}
+	}
+
+	return {
+		ss[(int)ShaderType::VERTEX].str(),
+		ss[(int)ShaderType::FRAGMENT].str()
+	};
+}
+
 static ui32 CompileShader(ui32 shaderType, const string& shaderCode){
 	// Create a seperated shader
 	ui32 shader = glCreateShader(shaderType);
@@ -88,29 +119,15 @@ void Setup()
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
+	// Load our shaders
+	ShaderProgramSource source = ParseShader("./basic.shader");
+	shader = CreateShader(source.VertexShader, source.FragmentShader);
+	glUseProgram(shader);
+
     // Debind the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	string vertexShader = 
-	"#version 330 core\n"
-	"\n"
-	"layout (location = 0) in vec4 position;\n"
-	"\n"
-	"void main(){\n"
-	"	gl_Position = position;\n"
-	"}\n";
-
-	string fragmentShader = 
-	"#version 330 core\n"
-	"\n"
-	"layout (location = 0) out vec4 color;\n"
-	"\n"
-	"void main(){\n"
-	"	color = vec4(1.0, 0.0, 0.0, 1.0);\n"
-	"}\n";
-
-	shader = CreateShader(vertexShader, fragmentShader);
-	glUseProgram(shader);
+	
 }
 
 void Update()
