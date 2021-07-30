@@ -694,14 +694,16 @@ void Setup()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, POSITION_LENGTH * sizeof(f32), positions, GL_STATIC_DRAW);
 
+    // Create vao
+	GLCall(glGenVertexArrays(1, &vao));
+	GLCall(glBindVertexArray(vao));
+    GLCall(glEnableVertexAttribArray(0));
+    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
+
 	// Create ibo
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, POSITION_LENGTH * sizeof(ui32), indicies, GL_STATIC_DRAW);
-
-    // Tell OpenGL what things are in this buffer
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
 	// Load our shaders
 	ShaderProgramSource source = ParseShader("./basic.shader");
