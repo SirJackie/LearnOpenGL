@@ -119,7 +119,7 @@ void Setup()
 	"layout (location = 0) in vec4 position;\n"
 	"\n"
 	"void main(){\n"
-	"	glPosition = position;\n"
+	"	gl_Position = position;\n"
 	"}\n";
 
 	string fragmentShader = 
