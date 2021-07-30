@@ -689,12 +689,19 @@ ui32 indicies[INDICIES_LENGTH] = {
 
 void Setup()
 {
+	// Load our shaders
+	ShaderProgramSource source = ParseShader("./basic.shader");
+	shader = CreateShader(source.VertexShader, source.FragmentShader);
+	glUseProgram(shader);
+
     // Create vbo
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, POSITION_LENGTH * sizeof(f32), positions, GL_STATIC_DRAW);
 
     // Create vao
+	// Make sure to create vao after vbo and before ibo
+	// So that the vao can properly build the connection to vbo
 	GLCall(glGenVertexArrays(1, &vao));
 	GLCall(glBindVertexArray(vao));
     GLCall(glEnableVertexAttribArray(0));
@@ -705,10 +712,13 @@ void Setup()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, POSITION_LENGTH * sizeof(ui32), indicies, GL_STATIC_DRAW);
 
-	// Load our shaders
-	ShaderProgramSource source = ParseShader("./basic.shader");
-	shader = CreateShader(source.VertexShader, source.FragmentShader);
-	glUseProgram(shader);
+	// Debind all the stuffs
+	// Make sure to debind vao before vbo
+	// Otherwise the vao will lose connection to vbo
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void Update()
@@ -716,8 +726,20 @@ void Update()
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// Bind all the stuffs
+	// Because the vao is connected to the vbo
+	// So we no longer need to bind the vbo
+	glUseProgram(shader);
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
 	// Draw Triangles
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, csNullPtr);
+
+	// Debind all the stuffs
+	glUseProgram(0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	// Swap the front and back buffer
 	glutSwapBuffers();
