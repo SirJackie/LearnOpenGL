@@ -2,6 +2,8 @@
 #include <GL/glut.h>
 #include "BasicDataTypeDeclarations.h"
 
+
+
 string GLGetEnumString(GLenum value){
 	if(value == GL_ZERO) return "GL_ZERO";
 	if(value == GL_FALSE) return "GL_FALSE";
@@ -539,16 +541,34 @@ string GLGetEnumString(GLenum value){
 	if(value == GL_CLIENT_ALL_ATTRIB_BITS) return "GL_CLIENT_ALL_ATTRIB_BITS";
 }
 
+inline void DebugBreak(){
+	#ifndef __debugbreak
+	; // Do Nothing if there's no __debugbreak() implemented in this compiler
+	#else
+	__debugbreak()
+	#endif
+}
+
+#define Assert(x) if(!(x)) DebugBreak()
+
+#define GLCall(x) GLClearError();\
+	x;\
+	Assert(GLLogError(#x, __FILE__, __LINE__))
+
 static void GLClearError(){
 	// Repeatly get errors until there's no error
 	while(glGetError() != GL_NO_ERROR);
 }
 
-static void GLCheckError(){
+static bool GLLogError(const char* function, const char* file, int line){
 	// While the glGetError() not returns GL_NO_ERROR(which is defined to 0) 
 	while(GLenum error = glGetError()){
-		cout << "[OpenGL Error] (" << hex << error << dec << "): " << GLGetEnumString(error) << endl;
+		cout << "[OpenGL Error " << hex << error << dec << "] "
+			 << "(" << file << ":" << line << ") : "
+			 << GLGetEnumString(error) << endl;
+		return false;
 	}
+	return true;
 }
 
 struct ShaderProgramSource{
@@ -694,9 +714,7 @@ void Update()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Draw Triangles
-	GLClearError();
-	glDrawElements(GL_TRIANGLES, 6, GL_INT, csNullPtr);
-	GLCheckError();
+	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, csNullPtr));
 
 	// Swap the front and back buffer
 	glutSwapBuffers();
