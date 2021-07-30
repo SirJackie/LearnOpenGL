@@ -714,7 +714,7 @@ void Update()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Draw Triangles
-	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, csNullPtr));
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, csNullPtr);
 
 	// Swap the front and back buffer
 	glutSwapBuffers();
