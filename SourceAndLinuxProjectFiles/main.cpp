@@ -28,8 +28,8 @@ ShaderProgramSource ParseShader(string filePath){
 	}
 
 	return {
-		ss[(int)ShaderType::VERTEX].str(),
-		ss[(int)ShaderType::FRAGMENT].str()
+		ss[(i32)ShaderType::VERTEX].str(),
+		ss[(i32)ShaderType::FRAGMENT].str()
 	};
 }
 
@@ -95,25 +95,39 @@ static ui32 CreateShader(const string& vertexShader, const string& fragmentShade
 	return program;
 }
 
-// Create a buffer ptr saver
-ui32 buffer;
+// Create ui32s to save buffers' ID
+ui32 vbo;  // Vertex Buffer Object
+ui32 ibo;  // Index  Buffer Object
+ui32 vao;  // Vertex Array  Object
 ui32 shader;
 
+#define POSITION_LENGTH 8
+#define INDICIES_LENGTH 6
+
 // Define our Vericies
-float positions[6] = {
-	 0.0f, -0.5f,
-	-0.5f,  0.5f,
-	 0.5f,  0.5f
+f32 positions[POSITION_LENGTH] = {
+	-0.5f, -0.5f,
+	 0.5f, -0.5f,
+	 0.5f,  0.5f,
+	-0.5f,  0.5f
+};
+
+ui32 indicies[INDICIES_LENGTH] = {
+	0, 1, 2,
+	2, 3, 0
 };
 
 void Setup()
 {
-    // Generate a buffer in GPU
-	glGenBuffers(1, &buffer);
+    // Create vbo
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, POSITION_LENGTH * sizeof(f32), positions, GL_STATIC_DRAW);
 
-    // Select the buffer in GPU and send data to it
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+	// Create ibo
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, POSITION_LENGTH * sizeof(ui32), indicies, GL_STATIC_DRAW);
 
     // Tell OpenGL what things are in this buffer
     glEnableVertexAttribArray(0);
@@ -136,7 +150,7 @@ void Update()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Draw Triangles
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, csNullPtr);
 
 	// Swap the front and back buffer
 	glutSwapBuffers();
