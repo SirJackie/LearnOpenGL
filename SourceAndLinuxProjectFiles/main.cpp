@@ -3,24 +3,29 @@
 #include "BasicDataTypeDeclarations.h"
 
 static ui32 CompileShader(ui32 shaderType, const string& shaderCode){
-	ui32 shaderID = glCreateShader(shaderType);
+	// Create a seperated shader
+	ui32 shader = glCreateShader(shaderType);
+
+	// Replace the source code of this shader object
 	const char* code_cstr = shaderCode.c_str();
-	glShaderSource(shaderID, 1, &code_cstr, nullptr);
-	glCompileShader(shaderID);
+	glShaderSource(shader, 1, &code_cstr, nullptr);
+
+	// Compile the shader
+	glCompileShader(shader);
 
 	// Get the compiling status
 	i32 result;
-	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
 
 	// If there is at least one error
 	if(result == GL_FALSE){
 		// Get the Length of the Error Message
 		i32 length;
-		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &length);
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 
 		// Get the Error Message itself
 		char* message = new char[length];
-		glGetShaderInfoLog(shaderID, length, &length, message);
+		glGetShaderInfoLog(shader, length, &length, message);
 
 		// Output the error message
 		cout << "Failed to compile "
@@ -29,32 +34,39 @@ static ui32 CompileShader(ui32 shaderType, const string& shaderCode){
 			 << message << endl;
 
 		// Return an empty shader
-		glDeleteShader(shaderID);
+		glDeleteShader(shader);
 		return 0;
 	}
 
-	return shaderID;
+	return shader;
 }
 
 static ui32 CreateShader(const string& vertexShader, const string& fragmentShader){
-	ui32 programID = glCreateProgram();
-	ui32 vsID = CompileShader(GL_VERTEX_SHADER, vertexShader);
-	ui32 fsID = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+	// Create a new whole shader
+	ui32 program = glCreateProgram();
 
-	glAttachShader(programID, vsID);
-	glAttachShader(programID, fsID);
-	glLinkProgram(programID);
-	glValidateProgram(programID);
+	// Compile Vertex and Fragment Shader
+	ui32 vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+	ui32 fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-	glDeleteShader(vsID);
-	glDeleteShader(fsID);
+	// Attach Vertex and Fragment Shader into the whole shader
+	glAttachShader(program, vs);
+	glAttachShader(program, fs);
 
-	return programID;
+	// Do Linking and Validating, make the whole shader run
+	glLinkProgram(program);
+	glValidateProgram(program);
+
+	// Flag the deletions of Vertex and Fragment Shader
+	glDeleteShader(vs);
+	glDeleteShader(fs);
+
+	return program;
 }
 
 // Create a buffer ptr saver
-ui32 bufferID;
-ui32 shaderID;
+ui32 buffer;
+ui32 shader;
 
 // Define our Vericies
 float positions[6] = {
@@ -66,10 +78,10 @@ float positions[6] = {
 void Setup()
 {
     // Generate a buffer in GPU
-	glGenBuffers(1, &bufferID);
+	glGenBuffers(1, &buffer);
 
     // Select the buffer in GPU and send data to it
-	glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
 
     // Tell OpenGL what things are in this buffer
@@ -97,8 +109,8 @@ void Setup()
 	"	color = vec4(1.0, 0.0, 0.0, 1.0);\n"
 	"}\n";
 
-	shaderID = CreateShader(vertexShader, fragmentShader);
-	glUseProgram(shaderID);
+	shader = CreateShader(vertexShader, fragmentShader);
+	glUseProgram(shader);
 }
 
 void Update()
@@ -114,7 +126,7 @@ void Update()
 }
 
 void CleanUp(){
-	glDeleteProgram(shaderID);
+	glDeleteProgram(shader);
 	cout << "The Shader has been deleted!" << endl;
 }
 
