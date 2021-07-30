@@ -539,6 +539,7 @@ string GLGetEnumString(GLenum value){
 	if(value == GL_SCISSOR_BIT) return "GL_SCISSOR_BIT";
 	if(value == GL_ALL_ATTRIB_BITS) return "GL_ALL_ATTRIB_BITS";
 	if(value == GL_CLIENT_ALL_ATTRIB_BITS) return "GL_CLIENT_ALL_ATTRIB_BITS";
+	return "Undefined GLEnum";
 }
 
 inline void DebugBreak(){
