@@ -2,8 +2,10 @@
 Target = LearnOpenGL.out
 Objects = ../Source/ErrorHandling.o
 Objects += ../Source/IndexBuffer.o
+Objects += ../Source/VertexArray.o
 Objects += ../Source/VertexBuffer.o
 Objects += ../Source/main.o
+Objects += ../Source/VertexBufferLayout.o
 
 TargetGeneratingArguments = -L/usr/X11R6/lib -lGL -lglut -lGLEW -lm
 ObjectGeneratingArguments = 

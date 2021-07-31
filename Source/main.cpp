@@ -4,6 +4,7 @@
 #include "ErrorHandling.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 
 struct ShaderProgramSource{
 	string VertexShader;
@@ -100,9 +101,10 @@ static ui32 CreateShader(const string& vertexShader, const string& fragmentShade
 
 // Create ui32s to save buffers' ID
 
-VertexBuffer vb;
-IndexBuffer  ib;
-ui32 vao;  // Vertex Array  Object
+VertexBuffer       vb;
+IndexBuffer        ib;
+VertexArray        va;
+VertexBufferLayout layout;
 ui32 shader;
 
 #define POSITION_LENGTH 8
@@ -128,25 +130,17 @@ void Setup()
 	shader = CreateShader(source.VertexShader, source.FragmentShader);
 	glUseProgram(shader);
 
-    // Create vbo
+    // Create vb, va, ib
 	vb.Init(positions, POSITION_LENGTH * sizeof(f32));
-
-    // Create vao
-	// Make sure to create vao after vbo and before ibo
-	// So that the vao can properly build the connection to vbo
-	GLCall(glGenVertexArrays(1, &vao));
-	GLCall(glBindVertexArray(vao));
-	GLCall(glEnableVertexAttribArray(0));
-	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
-
-	// Create ibo
+	layout.PushF32(2);
+	va.AddBuffer(vb, layout);
 	ib.Init(indicies, sizeof(indicies) / sizeof(ui32));
 
 	// Unbind all the stuffs
 	// Make sure to debind vao before vbo
 	// Otherwise the vao will lose connection to vbo
-	glBindVertexArray(0);
 	glUseProgram(0);
+	va.Unbind();
 	vb.Unbind();
 	ib.Unbind();
 }
@@ -172,9 +166,7 @@ void Update()
 	// Bind vao
 	// Because the vao is connected to the vbo
 	// So we no longer need to bind the vbo
-	glBindVertexArray(vao);
-
-	// Bind ibo
+	va.Bind();
 	ib.Bind();
 
 	// Draw Triangles
@@ -182,7 +174,7 @@ void Update()
 
 	// Unbind all the stuffs
 	glUseProgram(0);
-	glBindVertexArray(0);
+	va.Unbind();
 	ib.Unbind();
 
 	// Swap the front and back buffer
