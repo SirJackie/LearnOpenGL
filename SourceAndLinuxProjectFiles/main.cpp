@@ -726,11 +726,17 @@ void Update()
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Bind all the stuffs
+	// Bind shader and set uniform
+	glUseProgram(shader);
+	i32 location = glGetUniformLocation(shader, "u_Color");
+	glUniform4f(location, 1.0f, 1.0f, 0.0f, 1.0f);
+
+	// Bind vao
 	// Because the vao is connected to the vbo
 	// So we no longer need to bind the vbo
-	glUseProgram(shader);
 	glBindVertexArray(vao);
+
+	// Bind ibo
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
 	// Draw Triangles
