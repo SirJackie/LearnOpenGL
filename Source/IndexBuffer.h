@@ -7,17 +7,20 @@
 
 class IndexBuffer{
 private:
+    // Banned operations
+    IndexBuffer(IndexBuffer& vb);
+    const IndexBuffer& operator=(const IndexBuffer& vb);
+
+public:
     ui32 m_RendererID;
     ui32 m_Count;
-public:
-    IndexBuffer();
-    IndexBuffer(const void* data, ui32 count);
-    ~IndexBuffer();
 
+    IndexBuffer();
+    ~IndexBuffer();
+    
+    void Init(const void* data, ui32 count);
     void Bind();
     void Unbind();
-
-    inline ui32 GetCount() { return m_Count; }
 };
 
 #endif
