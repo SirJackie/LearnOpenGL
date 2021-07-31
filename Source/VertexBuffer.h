@@ -9,11 +9,12 @@ class VertexBuffer{
 private:
     ui32 m_RendererID;
 public:
-    // VertexBuffer(const void* data, ui32 size);
-    // ~VertexBuffer();
+    VertexBuffer();
+    VertexBuffer(const void* data, ui32 size);
+    ~VertexBuffer();
 
-    // void Bind();
-    // void Unbind();
+    void Bind();
+    void Unbind();
 };
 
 #endif
