@@ -5,6 +5,12 @@ VertexBuffer::VertexBuffer()
 	m_RendererID = 0;
 }
 
+VertexBuffer::VertexBuffer(VertexBuffer& vb)
+{
+	m_RendererID = vb.m_RendererID;
+	vb.m_RendererID = 0;  // Make sure this object won't crash after vb is killed
+}
+
 VertexBuffer::VertexBuffer(const void* data, ui32 size)
 {
 	ui32 vbo;
@@ -17,6 +23,13 @@ VertexBuffer::VertexBuffer(const void* data, ui32 size)
 VertexBuffer::~VertexBuffer()
 {
 	GLCall(glDeleteBuffers(1, &m_RendererID));
+}
+
+const VertexBuffer& VertexBuffer::operator=(const VertexBuffer& rightValue)
+{
+	m_RendererID = rightValue.m_RendererID;
+	//rightValue.m_RendererID = 0;  // Make sure this object won't crash after rightValue is killed
+	return *this;
 }
 
 void VertexBuffer::Bind()

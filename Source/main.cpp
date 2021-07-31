@@ -130,12 +130,12 @@ void Setup()
 
     // Create vbo
 
-	//// Error codes:
-	//vb = VertexBuffer(positions, POSITION_LENGTH * sizeof(f32));
-	//// Issue: Copy constructor & Destructor
+	// Error codes:
+	vb = VertexBuffer(positions, POSITION_LENGTH * sizeof(f32));
+	// Issue: Copy constructor & Destructor
 
 	// Fine codes:
-	vb.vboCreator(positions, POSITION_LENGTH * sizeof(f32));
+	//vb.vboCreator(positions, POSITION_LENGTH * sizeof(f32));
 	vbo = vb.m_RendererID;
 
     // Create vao

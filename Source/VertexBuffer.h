@@ -10,8 +10,10 @@ public:
     ui32 m_RendererID;
 
     VertexBuffer();
+    VertexBuffer(VertexBuffer& vb);
     VertexBuffer(const void* data, ui32 size);
     ~VertexBuffer();
+    const VertexBuffer& operator=(const VertexBuffer& rightValue);
 
     void Bind();
     void Unbind();
