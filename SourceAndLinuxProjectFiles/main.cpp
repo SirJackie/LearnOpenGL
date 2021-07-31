@@ -687,7 +687,7 @@ ui32 indicies[INDICIES_LENGTH] = {
 void Setup()
 {
 	// Load our shaders
-	ShaderProgramSource source = ParseShader("./basic.shader");
+	ShaderProgramSource source = ParseShader("../Resources/basic.shader");
 	shader = CreateShader(source.VertexShader, source.FragmentShader);
 	glUseProgram(shader);
 
