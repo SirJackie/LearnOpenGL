@@ -129,12 +129,7 @@ void Setup()
 	glUseProgram(shader);
 
     // Create vbo
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, POSITION_LENGTH * sizeof(f32), positions, GL_STATIC_DRAW);
-	//vb = VertexBuffer(positions, POSITION_LENGTH * sizeof(f32));
-	//vbo = vb.m_RendererID;
-	//vbo;
+	vbo = vboCreator(positions, POSITION_LENGTH * sizeof(f32));
 
     // Create vao
 	// Make sure to create vao after vbo and before ibo
