@@ -131,7 +131,7 @@ void Setup()
     // Create vbo
 
 	// Error codes:
-	vb = VertexBuffer(positions, POSITION_LENGTH * sizeof(f32));
+	vb.Init(positions, POSITION_LENGTH * sizeof(f32));
 	// Issue: Copy constructor & Destructor
 
 	// Fine codes:
