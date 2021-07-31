@@ -15,11 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\SourceAndLinuxProjectFiles\main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <None Include="packages.config" />
+    <None Include="..\Resources\basic.shader">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ClInclude Include="..\Source\BasicDataTypeDeclarations.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
