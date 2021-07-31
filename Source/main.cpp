@@ -754,9 +754,6 @@ void Update()
 
 	// Swap the front and back buffer
 	glutSwapBuffers();
-
-	// Post redisplay request
-	glutPostRedisplay();
 }
 
 void CleanUp(){
@@ -787,7 +784,8 @@ int main(int argc, char** argv)
 	// Run our custom Setup() function
 	Setup();
 	// Bind our update function to GLUT
-	glutDisplayFunc(Update);
+	glutDisplayFunc(Update);  // Refresh when window resize
+	glutIdleFunc(Update);     // Refresh every frame
 	// Run our update function every frame
 	glutMainLoop();
 	// Run CleanUp() after the main loop ends
