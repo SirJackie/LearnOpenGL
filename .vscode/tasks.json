@@ -4,7 +4,7 @@
 		{
             "label": "make run",
             "type": "shell",
-            "command": "make run",
+            "command": "cd LinuxProjectFiles; make run; cd ..",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

@@ -1,4 +1,4 @@
-SOURCE_FILE_NAME = main.cpp
+SOURCE_FILE_NAME = ../Source/main.cpp
 TARGET_FILE_NAME = main.out
 
 $(TARGET_FILE_NAME):$(SOURCE_FILE_NAME)
