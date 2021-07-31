@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 #include "BasicDataTypeDeclarations.h"
 #include "ErrorHandling.h"
+#include "VertexBuffer.h"
 
 struct ShaderProgramSource{
 	string VertexShader;

@@ -1,6 +1,7 @@
 # Target and Object Declarations
 Target = LearnOpenGL.out
 Objects = ../Source/ErrorHandling.o
+Objects += ../Source/VertexBuffer.o
 Objects += ../Source/main.o
 
 TargetGeneratingArguments = -L/usr/X11R6/lib -lGL -lglut -lGLEW -lm
