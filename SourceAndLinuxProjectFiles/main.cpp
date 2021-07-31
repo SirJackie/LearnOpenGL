@@ -721,15 +721,23 @@ void Setup()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+float deltaColor = 0.0f;
+
 void Update()
 {
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// Set delta color
+	deltaColor += 0.01f;
+	if(deltaColor > 1.0f){
+		deltaColor = 0.0f;
+	}
+
 	// Bind shader and set uniform
 	glUseProgram(shader);
 	i32 location = glGetUniformLocation(shader, "u_Color");
-	glUniform4f(location, 1.0f, 1.0f, 0.0f, 1.0f);
+	glUniform4f(location, deltaColor, deltaColor, 0.0f, 1.0f);
 
 	// Bind vao
 	// Because the vao is connected to the vbo
