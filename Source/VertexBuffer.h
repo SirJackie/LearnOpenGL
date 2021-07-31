@@ -15,8 +15,7 @@ public:
 
     void Bind();
     void Unbind();
+    ui32 vboCreator(const void* data, ui32 size);
 };
-
-ui32 vboCreator(const void* data, ui32 size);
 
 #endif

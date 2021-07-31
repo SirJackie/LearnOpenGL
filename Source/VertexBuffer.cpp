@@ -27,10 +27,11 @@ void VertexBuffer::Unbind()
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
 
-ui32 vboCreator(const void* data, ui32 size) {
+ui32 VertexBuffer::vboCreator(const void* data, ui32 size) {
 	ui32 vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+	m_RendererID = vbo;
 	return vbo;
 }

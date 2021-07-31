@@ -129,7 +129,8 @@ void Setup()
 	glUseProgram(shader);
 
     // Create vbo
-	vbo = vboCreator(positions, POSITION_LENGTH * sizeof(f32));
+	vb.vboCreator(positions, POSITION_LENGTH * sizeof(f32));
+	vbo = vb.m_RendererID;
 
     // Create vao
 	// Make sure to create vao after vbo and before ibo
