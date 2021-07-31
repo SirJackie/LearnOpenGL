@@ -761,6 +761,12 @@ void CleanUp(){
 	cout << "The Shader has been deleted!" << endl;
 }
 
+void OnTimer(int value)
+{
+   glutPostRedisplay();
+   glutTimerFunc(16, OnTimer, 1);
+}
+
 int main(int argc, char** argv)
 {
 	// Init GLUT
@@ -784,8 +790,8 @@ int main(int argc, char** argv)
 	// Run our custom Setup() function
 	Setup();
 	// Bind our update function to GLUT
-	glutDisplayFunc(Update);  // Refresh when window resize
-	glutIdleFunc(Update);     // Refresh every frame
+	glutDisplayFunc(Update);        // Refresh when window resize
+	glutTimerFunc(16, OnTimer, 1);  // Refresh every 16ms (about 60 FPS)
 	// Run our update function every frame
 	glutMainLoop();
 	// Run CleanUp() after the main loop ends
