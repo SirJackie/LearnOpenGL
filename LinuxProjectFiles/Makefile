@@ -1,6 +1,7 @@
 # Target and Object Declarations
 Target = LearnOpenGL.out
 Objects = ../Source/ErrorHandling.o
+Objects += ../Source/IndexBuffer.o
 Objects += ../Source/VertexBuffer.o
 Objects += ../Source/main.o
 
