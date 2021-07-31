@@ -129,6 +129,12 @@ void Setup()
 	glUseProgram(shader);
 
     // Create vbo
+
+	//// Error codes:
+	//vb = VertexBuffer(positions, POSITION_LENGTH * sizeof(f32));
+	//// Issue: Copy constructor & Destructor
+
+	// Fine codes:
 	vb.vboCreator(positions, POSITION_LENGTH * sizeof(f32));
 	vbo = vb.m_RendererID;
 
