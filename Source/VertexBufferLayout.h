@@ -32,19 +32,19 @@ public:
     void PushF32(ui32 count)
     {
         m_Elements.push_back({GL_FLOAT, count, GL_FALSE});
-        m_Stride += VertexBufferElement::GetSizeOfType(GL_FLOAT);
+        m_Stride += VertexBufferElement::GetSizeOfType(GL_FLOAT) * count;
     }
 
     void PushUI32(ui32 count)
     {
         m_Elements.push_back({GL_UNSIGNED_INT, count, GL_FALSE});
-        m_Stride += VertexBufferElement::GetSizeOfType(GL_UNSIGNED_INT);
+        m_Stride += VertexBufferElement::GetSizeOfType(GL_UNSIGNED_INT) * count;
     }
 
     void PushUI8(ui32 count)
     {
         m_Elements.push_back({GL_UNSIGNED_BYTE, count, GL_TRUE});
-        m_Stride += VertexBufferElement::GetSizeOfType(GL_UNSIGNED_BYTE);
+        m_Stride += VertexBufferElement::GetSizeOfType(GL_UNSIGNED_BYTE) * count;
     }
 
     inline const vector<VertexBufferElement>& GetElements() const { return m_Elements; }
