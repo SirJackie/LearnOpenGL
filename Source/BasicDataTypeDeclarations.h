@@ -39,4 +39,11 @@ const      csbool csFalse = 0;
 #define    csNull               NULL
 #define    csNullPtr         nullptr
 
+// Define Assert()
+#ifdef _MSC_VER
+#define Assert(x) if(!(x)) __debugbreak()
+#else
+#define Assert(x) (x)
+#endif
+
 #endif

@@ -1,17 +1,39 @@
-SOURCE_FILE_NAME = ../Source/main.cpp
-TARGET_FILE_NAME = main.out
+# Target and Object Declarations
+Target = LearnOpenGL.out
+Objects = ../Source/ErrorHandling.o
+Objects += ../Source/main.o
 
-$(TARGET_FILE_NAME):$(SOURCE_FILE_NAME)
-	g++ $(SOURCE_FILE_NAME) -o $(TARGET_FILE_NAME) -L/usr/X11R6/lib -lGL -lglut -lGLEW -lm
+TargetGeneratingArguments = -L/usr/X11R6/lib -lGL -lglut -lGLEW -lm
+ObjectGeneratingArguments = 
+
+Compiler := g++
+RMRF := rm -rf
+
+$(Target):$(Objects)
+	$(Compiler) $^ -o $@ $(TargetGeneratingArguments)
+
+%.o:%.cpp
+	$(Compiler) -c $^ -o $@ $(ObjectGeneratingArguments)
 
 .PHONY:
-run:
+generateMyself:
+	python3 GenerateMakefile.py
+
+clear_o:
+	$(RMRF) $(Target) $(Objects)
+
+run_o:
 	make
-	chmod 777 ./$(TARGET_FILE_NAME)
-	./$(TARGET_FILE_NAME)
+	chmod 777 $(Target)
+	./$(Target)
 
 clear:
-	rm -rf ./$(TARGET_FILE_NAME)
+	make generateMyself
+	make clear_o
+
+run:
+	make generateMyself
+	make run_o
 
 installDependencies:
 	sudo apt-get install build-essential libgl1-mesa-dev
