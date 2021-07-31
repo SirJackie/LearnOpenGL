@@ -542,15 +542,12 @@ string GLGetEnumString(GLenum value){
 	return "Undefined GLEnum";
 }
 
-inline void DebugBreak(){
-	#ifndef __debugbreak
-	; // Do Nothing if there's no __debugbreak() implemented in this compiler
-	#else
-	__debugbreak()
-	#endif
-}
+#ifdef _MSC_VER
+#define Assert(x) if(!(x)) __debugbreak()
+#else
+#define Assert(x) (x)
+#endif
 
-#define Assert(x) if(!(x)) DebugBreak()
 
 #define GLCall(x) GLClearError();\
 	x;\
@@ -748,7 +745,7 @@ void Update()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
 	// Draw Triangles
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, csNullPtr);
+	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, csNullPtr));
 
 	// Debind all the stuffs
 	glUseProgram(0);
