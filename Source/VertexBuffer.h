@@ -6,9 +6,9 @@
 #include "ErrorHandling.h"
 
 class VertexBuffer{
-private:
-    ui32 m_RendererID;
 public:
+    ui32 m_RendererID;
+
     VertexBuffer();
     VertexBuffer(const void* data, ui32 size);
     ~VertexBuffer();

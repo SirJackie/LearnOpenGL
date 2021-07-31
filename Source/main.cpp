@@ -98,6 +98,8 @@ static ui32 CreateShader(const string& vertexShader, const string& fragmentShade
 }
 
 // Create ui32s to save buffers' ID
+
+VertexBuffer vb;
 ui32 vbo;  // Vertex Buffer Object
 ui32 ibo;  // Index  Buffer Object
 ui32 vao;  // Vertex Array  Object
@@ -130,14 +132,17 @@ void Setup()
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, POSITION_LENGTH * sizeof(f32), positions, GL_STATIC_DRAW);
+	//vb = VertexBuffer(positions, POSITION_LENGTH * sizeof(f32));
+	//vbo = vb.m_RendererID;
+	//vbo;
 
     // Create vao
 	// Make sure to create vao after vbo and before ibo
 	// So that the vao can properly build the connection to vbo
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+	GLCall(glGenVertexArrays(1, &vao));
+	GLCall(glBindVertexArray(vao));
+	GLCall(glEnableVertexAttribArray(0));
+	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
 
 	// Create ibo
 	glGenBuffers(1, &ibo);
