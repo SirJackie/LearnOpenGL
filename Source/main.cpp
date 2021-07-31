@@ -754,6 +754,9 @@ void Update()
 
 	// Swap the front and back buffer
 	glutSwapBuffers();
+
+	// Post redisplay request
+	glutPostRedisplay();
 }
 
 void CleanUp(){
