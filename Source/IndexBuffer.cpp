@@ -1,22 +1,31 @@
 #include "IndexBuffer.h"
 
-IndexBuffer::IndexBuffer()
-{
-	/*m_RendererID = 0;
-	m_Count = 0;*/
+IndexBuffer::IndexBuffer(IndexBuffer& vb) {
+	// Banned Operation
+	;
 }
 
-IndexBuffer::IndexBuffer(const void* data, ui32 count)
+const IndexBuffer& IndexBuffer::operator=(const IndexBuffer& vb)
 {
-	m_Count = count;
-	GLCall(glGenBuffers(1, &m_RendererID));
-	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
-	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(ui32), data, GL_STATIC_DRAW));
+	// Banned Operation
+	return IndexBuffer();
+}
+
+IndexBuffer::IndexBuffer()
+{
+	m_RendererID = 0;
 }
 
 IndexBuffer::~IndexBuffer()
 {
 	GLCall(glDeleteBuffers(1, &m_RendererID));
+}
+
+void IndexBuffer::Init(const void* data, ui32 count)
+{
+	glGenBuffers(1, &m_RendererID);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(ui32), data, GL_STATIC_DRAW);
 }
 
 void IndexBuffer::Bind()

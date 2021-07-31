@@ -3,6 +3,7 @@
 #include "BasicDataTypeDeclarations.h"
 #include "ErrorHandling.h"
 #include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 struct ShaderProgramSource{
 	string VertexShader;
@@ -100,8 +101,7 @@ static ui32 CreateShader(const string& vertexShader, const string& fragmentShade
 // Create ui32s to save buffers' ID
 
 VertexBuffer vb;
-ui32 vbo;  // Vertex Buffer Object
-ui32 ibo;  // Index  Buffer Object
+IndexBuffer  ib;
 ui32 vao;  // Vertex Array  Object
 ui32 shader;
 
@@ -129,14 +129,7 @@ void Setup()
 	glUseProgram(shader);
 
     // Create vbo
-
-	// Error codes:
 	vb.Init(positions, POSITION_LENGTH * sizeof(f32));
-	// Issue: Copy constructor & Destructor
-
-	// Fine codes:
-	//vb.vboCreator(positions, POSITION_LENGTH * sizeof(f32));
-	vbo = vb.m_RendererID;
 
     // Create vao
 	// Make sure to create vao after vbo and before ibo
@@ -147,17 +140,15 @@ void Setup()
 	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
 
 	// Create ibo
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, POSITION_LENGTH * sizeof(ui32), indicies, GL_STATIC_DRAW);
+	ib.Init(indicies, sizeof(indicies) / sizeof(ui32));
 
-	// Debind all the stuffs
+	// Unbind all the stuffs
 	// Make sure to debind vao before vbo
 	// Otherwise the vao will lose connection to vbo
 	glBindVertexArray(0);
 	glUseProgram(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	vb.Unbind();
+	ib.Unbind();
 }
 
 float deltaColor = 0.0f;
@@ -184,15 +175,15 @@ void Update()
 	glBindVertexArray(vao);
 
 	// Bind ibo
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	ib.Bind();
 
 	// Draw Triangles
 	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, csNullPtr));
 
-	// Debind all the stuffs
+	// Unbind all the stuffs
 	glUseProgram(0);
 	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	ib.Unbind();
 
 	// Swap the front and back buffer
 	glutSwapBuffers();
